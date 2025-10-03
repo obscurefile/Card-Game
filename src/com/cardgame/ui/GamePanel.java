@@ -91,20 +91,6 @@ public class GamePanel extends JPanel implements Runnable {
 				}
 			}
 			
-			//Restarts game
-			if (warGame.gameFinished() == true) {
-				
-				if (playerMouse.mouseClick == true) {
-					
-					warGame.getPlayer1Cards().clear();
-					warGame.getPlayer2Cards().clear();
-					
-					deck.shuffleDeck();
-					
-					warGame.initializePlayerCards(deck, 26, warGame.getPlayer1Cards(), warGame.getPlayer2Cards());	
-				}
-			}
-			
 			//If there are additional cards the game stops
 			if (((warGame.getPlayer1Cards().size() + warGame.getPlayer2Cards().size()) != 52)) {
 				
