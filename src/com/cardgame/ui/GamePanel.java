@@ -2,8 +2,8 @@ package com.cardgame.ui;
 
 import com.cardgame.CardDeck;
 import com.cardgame.War;
-import java.util.Timer;
 import javax.swing.JPanel;
+import java.util.Timer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -32,12 +32,9 @@ public class GamePanel extends JPanel implements Runnable {
 	//Player Mouse
 	MouseHandler playerMouse = new MouseHandler();
 	
-	//Card Managers
-	CardManager gameCardManager = new CardManager(false);
-	CardManager player1CardManager = new CardManager(true);
-	CardManager player2CardManager = new CardManager(true);
-	CardManager player1WarCardManager = new CardManager(true);
-	CardManager player2WarCardManager = new CardManager(true);
+	//Players
+	Player player1 = new Player("player1");
+	Player player2 = new Player("player2");
 	
 	//Game
 	CardDeck deck = new CardDeck();
@@ -89,6 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
 					
 					System.out.println("Player 2 Wins!");
 				}
+				
+				gameThread = null;
 			}
 			
 			//If there are additional cards the game stops
@@ -117,7 +116,8 @@ public class GamePanel extends JPanel implements Runnable {
 		//Sets the next cards after a play as long as neither of the players have won
 		if (warGame.gameFinished() != true) {
 			
-			gameCardManager.cardUpdate(player1CardManager, player2CardManager, warGame);
+			player1.cardUpdate(warGame.getPlayer1Cards(), warGame.getPlayer1DrawnCards());
+			player2.cardUpdate(warGame.getPlayer2Cards(), warGame.getPlayer2DrawnCards());
 		} 
 	}
 	
@@ -129,41 +129,8 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		Graphics2D g2 = (Graphics2D) g;
 		
-		//Draws player 1's deck
-		player1CardManager.drawPlayer1Deck(warGame.getPlayer1Cards(), g2, player1DeckX, player1DeckY);
-		
-		//Draws player 2's deck
-		player2CardManager.drawPlayer2Deck(warGame.getPlayer2Cards(), g2, player2DeckX, player2DeckY);
-		
-		//Draws player 1's cards if they are in game
-		if (warGame.inGame(warGame.getPlayer1Cards())) {
-			
-			player1CardManager.drawPlayerCard(g2, player1X, player1Y);
-		}
-		
-		//Draws player 2's cards if they are in game
-		if (warGame.inGame(warGame.getPlayer2Cards())) {
-			
-			player2CardManager.drawPlayerCard(g2, player2X, player2Y);
-		}
-		
-		//Draw player 1's cards during war
-		if (!warGame.getPlayer1DrawnCards().isEmpty()) {
-			
-			//Updates player 1's cards during war
-			player1WarCardManager.setPlayerCard(warGame.getPlayer1DrawnCards().peek());
-			
-			player1WarCardManager.drawWar(g2, player1X, player1Y);
-		}
-		
-		//Draw player 2's cards during war
-		if (!warGame.getPlayer2DrawnCards().isEmpty()) {
-			
-			//Updates player 2's cards during war
-			player2WarCardManager.setPlayerCard(warGame.getPlayer2DrawnCards().peek());
-			
-			player2WarCardManager.drawWar(g2, player2X, player2Y);
-		}
+		player1.playerPaint(warGame.getPlayer1Cards(), warGame.getPlayer1DrawnCards(), g2, player1X, player1Y);
+		player2.playerPaint(warGame.getPlayer2Cards(), warGame.getPlayer2DrawnCards(), g2, player2X, player2Y);
 
 		g2.dispose();
 	}
