@@ -1,6 +1,5 @@
 package com.cardgame.ui;
 
-import com.cardgame.War;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -607,19 +606,5 @@ public class CardManager {
 		}
 		
 		drawPlayerCard(g2, x, y+260);
-	}
-	
-	//Update cards
-	public void cardUpdate(CardManager player1, CardManager player2, War game) {
-		
-		if (game.inGame(game.getPlayer1Cards())) {
-					
-			player1.setPlayerCard(game.getPlayer1Cards().peek());
-		}
-		
-		if (game.inGame(game.getPlayer2Cards())) {
-			
-			player2.setPlayerCard(game.getPlayer2Cards().peek());
-		}
 	}
 }
