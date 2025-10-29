@@ -3,7 +3,6 @@ package com.cardgame.ui;
 import com.cardgame.CardDeck;
 import com.cardgame.War;
 import javax.swing.JPanel;
-import java.util.Timer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -41,14 +40,13 @@ public class GamePanel extends JPanel implements Runnable {
 	War warGame = new War();
 	
 	//Creates game panel, what will display and run the game
-	public GamePanel(Timer timer) {
+	public GamePanel() {
 		
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));;
 		this.setBackground(new Color(0, 128, 0));
 		this.setDoubleBuffered(true);
 		this.setFocusable(true);
 		this.addMouseListener(playerMouse);
-		timer = new Timer();
 	}
 	
 	//Game thread
@@ -121,7 +119,6 @@ public class GamePanel extends JPanel implements Runnable {
 		} 
 	}
 	
-	//Paints on-screen information
 	@Override
 	public void paintComponent(Graphics g) {
 
