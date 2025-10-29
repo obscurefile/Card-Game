@@ -1,8 +1,6 @@
 package com.cardgame;
 
 import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class War implements Game {
@@ -14,13 +12,6 @@ public class War implements Game {
 	//Drawn cards used for war
 	private Stack<String> player1DrawnCards = new Stack<>();
 	private Stack<String> player2DrawnCards = new Stack<>();
-	
-	//Timer
-	public static Timer timer = new Timer();
-	private int delay = 2000;
-	
-	//War Visible
-	private boolean warCardsVisible;
 	
 	//Get player 1 cards
 	public Stack<String> getPlayer1Cards(){
@@ -44,16 +35,6 @@ public class War implements Game {
 	public Stack<String> getPlayer2DrawnCards(){
 			
 			return this.player2DrawnCards;
-	}
-	
-	public boolean getWarVisibility() {
-		
-		return warCardsVisible;
-	}
-	
-	public void setWarVisibility(boolean value) {
-		
-		warCardsVisible = value;
 	}
 
 	//Player has won
@@ -82,30 +63,7 @@ public class War implements Game {
 			TimeUnit.SECONDS.sleep(2);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			
 			e.printStackTrace();
-		}
-	}
-	
-	//Show player cards during war
-	private void showCards() {
-		
-		warCardsVisible = true;
-		
-		if (warCardsVisible) {
-			
-			TimerTask task = new TimerTask() {
-				
-				@Override
-				public void run() {
-					
-					warCardsVisible = false;
-				}
-			};
-			
-			timer.schedule(task, delay);
-			
-			delay();
 		}
 	}
 	
@@ -265,7 +223,7 @@ public class War implements Game {
 
 		}
 
-		showCards();
+		delay();
 		
 		switch (compareDrawnCards(deck)) {
 		
@@ -291,8 +249,6 @@ public class War implements Game {
 					player1DrawnCards.push(player1Cards.pop());
 					player2DrawnCards.push(player2Cards.pop());
 				}
-				
-				showCards();
 			}
 			
 			if (compareDrawnCards(deck) == 1) {
