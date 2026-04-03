@@ -9,7 +9,7 @@ public class CardDeck {
 	//Number of suits, ranks, and cards
 	public static final int CARD_SUITS = 4;
 	public static final int CARD_RANKS = 13;
-	public static final int CARD_NUM = CARD_SUITS * CARD_RANKS;
+	public static final int MAX_CARDS = CARD_SUITS * CARD_RANKS;
 	
 	//Card suits
 	private enum Suits {
@@ -39,41 +39,32 @@ public class CardDeck {
 	}
 	
 	//Deck of cards
-	private String[] storedCards = new String[CARD_NUM];
+	private String[] storedCards = new String[MAX_CARDS];
 	
 	//Returns stored cards 
 	public String[] getStoredCards() {
 		
 		return storedCards;
 	}
-	
-	//Gets random card suit or rank
-	private int randomCardNum(int category) {
-		
-		int num = new Random().nextInt(0, category);
-		return num;
-	}
 		
 	//Makes random card
 	private String randomCard() {
 		
-		String chosenCardSuit = Suits.values()[randomCardNum(CARD_SUITS)].toString();
-		String chosenCardRank = Ranks.values()[randomCardNum(CARD_RANKS)].toString();
-	
-		String chosenCard = chosenCardRank + " of " + chosenCardSuit + "s";
+		//Creates card using rank and suit names
+		String card = Ranks.values()[new Random().nextInt(0, CARD_RANKS)].toString() + " of " + Suits.values()[new Random().nextInt(0, CARD_SUITS)].toString() + "s";
 		
-		return chosenCard;
+		return card;
 	}
 	
 	//Creates a deck of cards
 	public void createDeck() {
 		
-		for (int i = 0; i < CARD_NUM; i++) {
+		for (int i = 0; i < MAX_CARDS; i++) {
 			
 			String playerCard = randomCard();
 		
 			//Checks if the card is not already made
-			if (!(Arrays.asList(storedCards).contains(playerCard)) && i < CARD_NUM) {
+			if (!(Arrays.asList(storedCards).contains(playerCard)) && i < MAX_CARDS) {
 				
 				storedCards[i] = playerCard;
 			} else {
@@ -95,27 +86,16 @@ public class CardDeck {
 		int p1CardValue = 0;
 		int p2CardValue = 0;
 		
-		//Card ranks
-		String[] ranks = new String[CARD_RANKS];
-		
-		//Adds all of card ranks to an array
-		for (int i = 0; i < CARD_RANKS; i++) {
-			ranks[i] = Ranks.values()[i].toString();
-		}
-		
-		//Checks through rank array
-		for (int j = 0; j < ranks.length; j++) {
+		//Checks through ranks
+		for (Ranks r : Ranks.values()) {
 			
-			//If player 1's card contains the rank from the array the card's value becomes the same value as the rank
-			if (player1Card.contains(ranks[j])) {
+			//Gets the card power of each card
+			if (player1Card.contains(r.toString())) {
 				
-				p1CardValue = Ranks.valueOf(ranks[j]).getCardPower();
-			}
-			
-			//If player 2's card contains the rank from the array the card's value becomes the same value as the rank
-			if (player2Card.contains(ranks[j])) {
-
-				p2CardValue = Ranks.valueOf(ranks[j]).getCardPower();
+				p1CardValue = Ranks.valueOf(r.toString()).getCardPower();
+			} else if(player2Card.contains(r.toString())) {
+				
+				p2CardValue = Ranks.valueOf(r.toString()).getCardPower();
 			}
 		}
 		
